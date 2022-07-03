@@ -2,22 +2,18 @@
 
 #include "nanodbc\nanodbc.h"
 #include "db.h"
+#include "userStore.h"
 
+#include "..\src\pm.utils\include\md5.h"
 
 int main() try
 {
-    auto conn = pm::dal::DB::get().conn();
-
-    auto result = nanodbc::execute(conn, "SELECT i FROM t;");
-    while (result.next())
-    {
-        auto i = result.get<int>(0);
-        std::cout << i << '\n';
-    }
-    return EXIT_SUCCESS;
+	pm::dal::ensureAdminUser();
+	
+	return EXIT_SUCCESS;
 }
 catch (std::exception& e)
 {
-    std::cerr << e.what() << std::endl;
-    return EXIT_FAILURE;
+	std::cerr << e.what() << '\n';
+	return EXIT_FAILURE;
 }

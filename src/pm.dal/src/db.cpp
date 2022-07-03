@@ -1,6 +1,7 @@
 #include "pch_dal.h"
 
 #include "db.h"
+#include "userStore.h"
 
 pm::dal::DB& pm::dal::DB::get()
 {
@@ -18,6 +19,6 @@ pm::dal::DB::DB()
 	: m_conn(
 		"Driver={ODBC Driver 17 for SQL Server};"
 		"Server=LECOMP\\SQLEXPRESS;"
-		"Database=test;"
+		"Database=pmdb;"
 		"Trusted_Connection=yes;")
-{  }
+{}

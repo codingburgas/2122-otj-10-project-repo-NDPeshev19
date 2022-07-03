@@ -18,7 +18,7 @@
     <ClInclude Include="include\pch_types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\User.h">
+    <ClInclude Include="include\user.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
