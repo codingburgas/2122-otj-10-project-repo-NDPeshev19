@@ -2,19 +2,19 @@
 
 #include "db.h"
 
-DB& DB::get()
+pm::dal::DB& pm::dal::DB::get()
 {
-	static DB db;
+	static pm::dal::DB db;
 
 	return db;
 }
 
-nanodbc::connection& DB::conn()
+nanodbc::connection& pm::dal::DB::conn()
 {
 	return m_conn;
 }
 
-DB::DB()
+pm::dal::DB::DB()
 	: m_conn(
 		"Driver={ODBC Driver 17 for SQL Server};"
 		"Server=LECOMP\\SQLEXPRESS;"

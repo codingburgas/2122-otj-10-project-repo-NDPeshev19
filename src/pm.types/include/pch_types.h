@@ -8,6 +8,8 @@
 #define PCH_H_TYPES
 
 // add headers that you want to pre-compile here
-
+#include <string>
+#include <string_view>
+#include <ctime>
 
 #endif //PCH_H_TYPES

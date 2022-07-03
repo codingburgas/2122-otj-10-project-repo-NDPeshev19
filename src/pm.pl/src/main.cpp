@@ -6,7 +6,7 @@
 
 int main() try
 {
-    auto conn = DB::get().conn();
+    auto conn = pm::dal::DB::get().conn();
 
     auto result = nanodbc::execute(conn, "SELECT i FROM t;");
     while (result.next())

@@ -2,17 +2,20 @@
 
 #include "pch_dal.h"
 
-class DB
+namespace pm::dal
 {
-public:
-	static DB& get();
-	nanodbc::connection& conn();
+	class DB
+	{
+	public:
+		static DB& get();
+		nanodbc::connection& conn();
 
-	DB(const DB&) = delete;
-	void operator=(const DB&) = delete;
+		DB(const DB&) = delete;
+		void operator=(const DB&) = delete;
 
-private:
-	DB();
+	private:
+		DB();
 
-	nanodbc::connection m_conn;
-};
+		nanodbc::connection m_conn;
+	};
+}
