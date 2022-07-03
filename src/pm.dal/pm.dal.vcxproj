@@ -183,9 +183,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\db.h" />
     <ClInclude Include="include\pch_dal.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\db.cpp" />
     <ClCompile Include="src\pch_dal.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

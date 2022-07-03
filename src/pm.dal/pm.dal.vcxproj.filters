@@ -18,9 +18,15 @@
     <ClInclude Include="include\pch_dal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\db.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch_dal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\db.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
