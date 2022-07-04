@@ -13,6 +13,6 @@
 #include <string>
 #include <string_view>
 #include <stdexcept>
-
+#include <algorithm>
 
 #endif //PCH_H_BLL

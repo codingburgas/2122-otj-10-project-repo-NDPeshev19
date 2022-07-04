@@ -14,7 +14,6 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 				out << "Team " << teamName << " added\n";
 			}, "Create a new team", { "Name of team" });
 
-		// Get all users of team (list team and it's users)
 		menu->Insert("listTeamUsers",
 			[](std::ostream& out, std::string teamName)
 			{

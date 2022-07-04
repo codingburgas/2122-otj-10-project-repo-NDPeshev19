@@ -28,10 +28,21 @@ void pm::bll::assignUser(std::string_view username, std::string_view teamName)
 	auto user = pm::dal::retrieveUser(username);
 	auto team = pm::dal::retrieveTeam(teamName);
 	
+
 	if (!user)
 		throw std::runtime_error("User not found");
 	if (!team)
 		throw std::runtime_error("Team not found");
+
+	auto userTeams = getUserTeams(username);
+
+	if (auto it = std::ranges::find_if(userTeams, 
+		[&teamName](const auto& t)
+		{ 
+			return t.name == teamName; 
+		});
+		it != userTeams.end())
+		throw std::runtime_error("User already assigned to this team");
 
 	pm::dal::assignUser(user->id, team->id);
 }
