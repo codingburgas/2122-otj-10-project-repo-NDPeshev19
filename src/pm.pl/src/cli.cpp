@@ -66,10 +66,18 @@ std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin,
 	
 	if (isAdmin)
 	{
-		menu->Insert("list", [](std::ostream& out, bool includeDeleted)
+		menu->Insert("self",
+			[loggedUserId](std::ostream& out)
+			{
+				out << 
+					pm::bll::getUser(loggedUserId)->toPrettyString() << '\n';
+			});
+
+		menu->Insert("list", 
+			[](std::ostream& out, bool includeDeleted)
 			{
 				printAllUsers(out, includeDeleted);
-			}, "List all users.", { "Show deleted users (bool)" });
+			}, "List all users", { "Show deleted users (bool)" });
 
 		menu->Insert("add",
 			[loggedUserId](std::ostream& out,
