@@ -196,7 +196,13 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 		// Change team name
 		// Assign user to team
 		// Remove user from team
-		// Delete team
+		
+		menu->Insert("delete",
+			[](std::ostream& out, std::string teamName)
+			{
+				pm::bll::deleteTeam(teamName);
+				out << "Deleted team\n";
+			}, "Delete a team", { "Name of team to delete" });
 	}
 
 	menu->Insert("self",
