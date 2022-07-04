@@ -14,7 +14,7 @@ int main() try
 
 	auto loggedUser = pm::pl::login();
 
-	pm::pl::cli(pm::pl::getMenu(loggedUser.isAdmin));
+	pm::pl::cli(pm::pl::getMenu(loggedUser.isAdmin, loggedUser.id));
 
 	return EXIT_SUCCESS;
 }

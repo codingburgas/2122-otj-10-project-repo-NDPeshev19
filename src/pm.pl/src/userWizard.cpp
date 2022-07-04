@@ -1,16 +1,50 @@
 #include "userWizard.h"
 
 #include <iostream>
+#include <string>
+#include <chrono>
 
-namespace pm::pl
+
+void pm::pl::printAllUsers(std::ostream& out)
 {
-	void pm::pl::printAllUsers(std::ostream& out)
+	auto users = pm::bll::getAllUsers();
+	
+	for (const auto& user : users)
 	{
-		auto users = pm::bll::getAllUsers();
-
-		for (const auto& user : users)
-		{
-			out << user.toPrettyString() << '\n' << std::string(47, '-') << '\n';
-		}
+		out << user.toPrettyString() << '\n' << std::string(47, '-') << '\n';
 	}
+}
+
+void pm::pl::addUser(std::ostream& out, const size_t creatorId)
+{
+	pm::types::User user;
+
+	out << "User creation:\n";
+	out << "Username:\n";
+	std::getline(std::cin, user.username);
+	out << "Password:\n";
+	std::getline(std::cin, user.password);
+	out << "FirstName:\n";
+	std::getline(std::cin, user.firstName);
+	out << "LastName:\n";
+	std::getline(std::cin, user.lastName);
+	out << "IsAdmin (0 - no, 1 - yes):\n";
+	std::cin >> user.isAdmin;
+
+	auto now = std::chrono::system_clock::to_time_t(
+		std::chrono::system_clock::now());
+
+	user.dateOfCreation = now;
+	user.dateOfLastChange = now;
+		
+	user.idOfCreator = creatorId;
+	user.idOfLastChanger = creatorId;
+
+	user.isDeleted = false;
+
+	// pm::bll::addUser(user);
+
+	out << user.toPrettyString() << '\n';
+
+	out << "\nUser added successfully!\n";
 }

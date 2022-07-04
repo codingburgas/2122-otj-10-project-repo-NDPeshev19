@@ -4,7 +4,7 @@
 
 #include <functional>
 
-std::unique_ptr<cli::Menu> pm::pl::getMenu(const bool isAdmin)
+std::unique_ptr<cli::Menu> pm::pl::getMenu(const bool isAdmin, const size_t loggedUserId)
 {
 	auto rootMenu =  std::make_unique<cli::Menu>("main");
 	
@@ -13,7 +13,7 @@ std::unique_ptr<cli::Menu> pm::pl::getMenu(const bool isAdmin)
 		std::cout << "pong" << '\n'; 
 	});
 
-	rootMenu->Insert(std::move(pm::pl::getUserManagerSubMenu(isAdmin)));
+	rootMenu->Insert(std::move(pm::pl::getUserManagerSubMenu(isAdmin, loggedUserId)));
 
 	return rootMenu;
 }
@@ -46,15 +46,34 @@ void pm::pl::cli(std::unique_ptr<cli::Menu> menu)
 	scheduler.Run();
 }
 
-std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin)
+std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin, 
+	const size_t loggedUserId)
 {
 	auto menu = std::make_unique<cli::Menu>("userManager");
 
-	menu->Insert("list", [](std::ostream& out) { printAllUsers(out); });
+	menu->Insert("list", [](std::ostream& out) 
+	{ 
+		printAllUsers(out); 
+	}, "List all users.");
+	
+	menu->Insert("add", [loggedUserId](std::ostream& out, 
+		std::string username,
+		std::string password,
+		std::string firstName,
+		std::string lastName,
+		bool isAdmin)
+	{
+		auto now = std::chrono::system_clock::to_time_t(
+			std::chrono::system_clock::now());
+
+		pm::bll::addUser({ username, password, firstName, lastName,
+			now, loggedUserId, now, loggedUserId, 0, isAdmin });
+		
+	}, "Add a user.", { "Username", "Password", "First name", "Last name", "Is Admin (bool)", });
 
 	menu->Insert("ping", [](std::ostream& out)
 		{
-			std::cout << "User pong\n";
+			out << "User pong\n";
 		});
 
 	return menu;

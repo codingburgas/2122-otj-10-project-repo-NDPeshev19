@@ -9,4 +9,6 @@ namespace pm::bll
 		std::string_view username, std::string_view password);
 
 	std::vector<pm::types::User> getAllUsers();
+
+	void addUser(const pm::types::User& user);
 }

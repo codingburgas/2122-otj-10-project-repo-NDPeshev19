@@ -13,3 +13,8 @@ std::vector<pm::types::User> pm::bll::getAllUsers()
 {
 	return pm::dal::retrieveAllUsers();
 }
+
+void pm::bll::addUser(const pm::types::User& user)
+{
+	pm::dal::createUser(user);
+}
