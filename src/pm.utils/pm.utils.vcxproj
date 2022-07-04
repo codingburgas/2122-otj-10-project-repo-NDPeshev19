@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\asLValue.h" />
+    <ClInclude Include="include\asteriskInput.h" />
     <ClInclude Include="include\md5.h" />
     <ClInclude Include="include\pch_utils.h" />
     <ClInclude Include="include\timeConv.h" />

@@ -27,6 +27,9 @@
     <ClInclude Include="include\timeConv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\asteriskInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch_utils.cpp">

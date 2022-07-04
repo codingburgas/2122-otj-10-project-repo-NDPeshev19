@@ -1,6 +1,7 @@
 #include "login.h"
 
 #include "userManager.h"
+#include "asteriskInput.h"
 
 pm::types::User pm::pl::login()
 {
@@ -11,8 +12,10 @@ pm::types::User pm::pl::login()
 
 	std::cout << "Username:\n";
 	getline(std::cin, username);
+	
+	pm::utils::PasswordField passwordField(" ", 1, 1);
 	std::cout << "Password:\n";
-	getline(std::cin, password);
+	password = passwordField.getline();
 
 	if (auto user = pm::bll::loginAsUser(username, password);
 		user)
