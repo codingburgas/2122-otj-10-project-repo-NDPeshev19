@@ -52,8 +52,8 @@ void pm::pl::cli(std::unique_ptr<cli::Menu> menu)
 	cli.StdExceptionHandler(
 		[](std::ostream& out, const std::string& cmd, const std::exception& e)
 		{
-			out << "Exception caught in cli handler: " << e.what()
-				<< " handling command: " << cmd << ".\n";
+			out << "An error occured:\n\"" << e.what()
+				<< "\"\n with command: " << cmd << ".\n";
 		}
 	);
 
