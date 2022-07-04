@@ -8,10 +8,15 @@
 #include "login.h"
 #include "cli.h"
 
+#include "tabulate/tabulate.hpp"
+
 int main() try
 {
-	pm::dal::ensureAdminUser();
+	system("chcp 437");
+	system("cls");
 
+	pm::dal::ensureAdminUser();
+	
 	auto loggedUser = pm::pl::login();
 
 	pm::pl::cli(pm::pl::getMenu(loggedUser.isAdmin, loggedUser.id));
