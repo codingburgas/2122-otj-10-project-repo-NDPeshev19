@@ -17,7 +17,7 @@ std::unique_ptr<cli::Menu> pm::pl::getMenu(const bool isAdmin,
 		});
 	
 	rootMenu->Insert("cls",
-		[](std::ostream* out)
+		[](std::ostream& out)
 		{
 			system("cls");
 		}, "Clear screen");
@@ -128,7 +128,7 @@ std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin,
 	}
 	
 	menu->Insert("cls",
-		[](std::ostream* out)
+		[](std::ostream& out)
 		{
 			system("cls");
 		}, "Clear screen");

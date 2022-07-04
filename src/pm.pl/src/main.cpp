@@ -12,9 +12,6 @@
 
 int main() try
 {
-	system("chcp 437");
-	system("cls");
-
 	pm::dal::ensureAdminUser();
 	
 	auto loggedUser = pm::pl::login();
