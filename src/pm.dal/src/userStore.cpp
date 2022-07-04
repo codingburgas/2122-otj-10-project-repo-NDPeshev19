@@ -73,10 +73,6 @@ try {
 	auto isDeleted = static_cast<bool>(result.get<int>("IsDeleted"));
 	auto isAdmin = static_cast<bool>(result.get<int>("IsAdmin"));
 
-	//	id, userName, passwordHash, firstName, lastName,
-	//	dateOfCreation, idOfCreator, dateOfLastChanger, idOfLastChanger,
-	//	isDeleted, isAdmin
-
 	return {{ id, userName, passwordHash, firstName, lastName,
 						dateOfCreation, idOfCreator, dateOfLastChanger, idOfLastChanger,
 						isDeleted, isAdmin }};

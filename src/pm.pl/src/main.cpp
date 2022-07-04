@@ -1,21 +1,21 @@
 #include <iostream>
+#include <memory>
 
 #include "nanodbc\nanodbc.h"
 #include "db.h"
 #include "userStore.h"
 #include "userManager.h"
 #include "login.h"
-
-#include "..\src\pm.utils\include\md5.h"
+#include "cli.h"
 
 int main() try
 {
 	pm::dal::ensureAdminUser();
 
-	auto user = pm::pl::login();
+	auto loggedUser = pm::pl::login();
 
-	std::cout << "Mnogo si gotin :)\n";
-	
+	pm::pl::cli(pm::pl::getMenu(loggedUser.isAdmin));
+
 	return EXIT_SUCCESS;
 }
 catch (std::exception& e)
