@@ -6,8 +6,6 @@
 #include "asLValue.h"
 #include "md5.h"
 
-#include <iostream>
-
 void pm::dal::ensureAdminUser()
 {
 	if (checkForAdminUser())
@@ -37,6 +35,43 @@ bool pm::dal::checkForAdminUser()
 	result.next();
 
 	return result.get<int>(0);
+}
+
+pm::types::User pm::dal::getUserLogin(std::string_view username, std::string_view password)
+{
+	auto& conn = pm::dal::DB::get().conn();
+	
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"SELECT Id, UserName, Password, FirstName, LastName, "
+		"DateOfCreation, IdOfCreator, DateOfLastChanger, IdOfLastChanger, "
+		"IsDeleted, IsAdmin "
+		"FROM Users "
+		"WHERE Username = ? AND Password = ?");
+
+
+	auto hashed = md5(std::string(password));
+	statement.bind(0, username.data());
+	statement.bind(1, hashed.c_str());
+
+	nanodbc::result result = nanodbc::execute(statement);
+	
+	result.first();
+
+	auto id = result.get<size_t>("Id");
+	auto userName = result.get<std::string>("UserName");
+	auto passwordHash = result.get<std::string>("Password");
+	auto firstName = result.get<std::string>("FirstName");
+	auto lastName = result.get<std::string>("LastName");
+	auto dateOfCreation = result.get<nanodbc::timestamp>("DateOfCreation");
+	auto idOfCreator = result.get<size_t>("IdOfCreator");
+	auto dateOfLastChanger = result.get<nanodbc::timestamp>("DateOfLastChanger");
+	auto idOfLastChanger = result.get<size_t>("IdOfLastChanger");
+	auto isDeleted = static_cast<bool>(result.get<int>("IsDeleted"));
+	auto isAdmin = static_cast<bool>(result.get<int>("IsAdmin"));
+
+	return {};
 }
 
 void pm::dal::createUser(const pm::types::User& user)

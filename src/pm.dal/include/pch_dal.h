@@ -9,6 +9,8 @@
 
 // add headers that you want to pre-compile here
 #include <chrono>
+#include <string>
+#include <string_view>
 
 #include "nanodbc/nanodbc.h"
 

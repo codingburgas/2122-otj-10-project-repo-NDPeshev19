@@ -21,6 +21,8 @@ namespace pm::types
 		bool isDeleted{};
 		bool isAdmin{};
 
+		User() = default;
+
 		User(const string_view t_username,
 			const string_view t_password, const string_view t_firstName,
 			const string_view t_lastName, const time_t t_dateOfCreation,
