@@ -10,5 +10,7 @@ namespace pm::bll
 	std::optional<pm::types::Team> retrieveTeam(std::string_view teamName);
 	void assignUser(std::string_view username, std::string_view teamName);
 	
+	std::vector<pm::types::Team> getUserTeams(std::string_view username);
+	
 	void deleteTeam(std::string_view teamName);
 }

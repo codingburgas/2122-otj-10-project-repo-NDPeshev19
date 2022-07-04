@@ -15,14 +15,17 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 				out << "Team " << teamName << " added\n";
 			}, "Create a new team", { "Name of team" });
 
-		menu->Insert("list",
-			[](std::ostream& out)
-			{
-				printAllTeams(out);
-			}, "List all teams");
-
 		// Get all users of team (list team and it's users)
-		// Get all teams of user (list users and all teams the user is in)
+		
+		
+		menu->Insert("listUserTeams",
+			[](std::ostream& out, std::string username)
+			{
+				auto teams = pm::bll::getUserTeams(username);
+				auto table = pm::pl::createTable(teams);
+				out << table << '\n';
+			}, "List all teams that a certain user is in", {"Username"});
+
 		// Change team name
 		
 		menu->Insert("assign",
@@ -44,12 +47,32 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 			}, "Delete a team", { "Name of team to delete" });
 	}
 
+	menu->Insert("list",
+		[](std::ostream& out)
+		{
+			printAllTeams(out);
+		}, "List all teams");
+
 	menu->Insert("self",
 		[loggedUserId](std::ostream& out)
 		{
-			// display all teams current user is in
-			out << "not implemented\n";
+			auto teams = 
+				pm::bll::getUserTeams(
+					pm::bll::getUser(loggedUserId)->username);
+			
+			auto table = pm::pl::createTable(teams);
+			out << table << '\n';
 		});
+
+	menu->Insert("assignSelf",
+		[loggedUserId](std::ostream& out, std::string teamName)
+		{
+			auto user = pm::bll::getUser(loggedUserId);
+
+			pm::bll::assignUser(user->username, teamName);
+			out << "User " << user->username <<
+				" assigned to team " << teamName << '\n';
+		}, "Assign yourself to a team", { "Team name" });
 
 	menu->Insert("shutdown",
 		[](std::ostream& out)

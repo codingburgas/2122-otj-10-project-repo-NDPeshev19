@@ -5,6 +5,8 @@
 
 #include "timeConv.h";
 
+#include <iostream>
+
 void pm::dal::createTeam(std::string_view teamName, size_t creatorId)
 {
 	auto conn = DB::get().conn();
@@ -74,6 +76,33 @@ catch (...)
 	return std::nullopt;
 }
 
+std::optional<pm::types::Team> pm::dal::retrieveTeam(size_t teamId)
+try
+{
+	auto conn = DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"SELECT Id, Name, DateOfCreation, IdOfCreator,"
+		"DateOfLastChange, IdOfLastChanger "
+		"FROM Teams WHERE Id = ?");
+
+	statement.bind(0, &teamId);
+
+	nanodbc::result result = nanodbc::execute(statement);
+
+	result.next();
+
+	auto team = constructTeam(result);
+
+	return { team };
+}
+catch (...)
+{
+	return std::nullopt;
+}
+
 void pm::dal::deleteTeam(std::string_view teamName)
 {
 	auto conn = DB::get().conn();
@@ -101,6 +130,40 @@ void pm::dal::assignUser(size_t userId, size_t teamId)
 	statement.bind(1, &teamId);
 
 	nanodbc::execute(statement);
+}
+
+std::vector<pm::types::Team> pm::dal::retrieveUserTeams(size_t userId)
+{
+	auto conn = DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement, "SELECT TeamId "
+		"FROM UsersTeams WHERE UserId = ?");
+
+	statement.bind(0, &userId);
+	
+	nanodbc::result result = nanodbc::execute(statement);
+	
+	std::vector<types::Team> teams;
+	teams.reserve(result.rows() || 1);
+	
+	while (result.next())
+	{
+		auto teamId = result.get<size_t>("TeamId");
+		auto team = retrieveTeam(teamId);
+		
+		if (team)
+		{
+			teams.push_back(std::move(*team));
+		}
+		else
+		{
+			std::cout << "Team id that failed: " << teamId << '\n';
+		}
+	}
+
+	return teams;
 }
 
 pm::types::Team pm::dal::constructTeam(nanodbc::result& result)

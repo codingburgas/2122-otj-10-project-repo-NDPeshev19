@@ -4,19 +4,26 @@
 
 void pm::pl::printAllTeams(std::ostream& out)
 {
+	auto teams = pm::bll::getAllTeams();
+
+	auto table = createTable(teams);
+
+	out << table << '\n';
+}
+
+tabulate::Table pm::pl::createTable(std::vector<pm::types::Team> teams)
+{
 	tabulate::Table table;
 	
 	table.add_row({ "Id", "Name", "Date of creation", "Id of creator",
-		"Date of last change", "Id of last changer" });
-
-	auto teams = pm::bll::getAllTeams();
+	"Date of last change", "Id of last changer" });
 
 	for (const auto& team : teams)
 	{
 		table.add_row({ std::to_string(team.id), team.name,
 			pm::utils::toString(team.dateOfCreation),
 			std::to_string(team.IdOfCreator),
-			pm::utils::toString(team.dateOfLastChange), 
+			pm::utils::toString(team.dateOfLastChange),
 			std::to_string(team.idOfLastChanger) });
 	}
 
@@ -24,5 +31,5 @@ void pm::pl::printAllTeams(std::ostream& out)
 		.font_color(tabulate::Color::yellow)
 		.font_align(tabulate::FontAlign::center);
 
-	out << table << '\n';
+	return table;
 }

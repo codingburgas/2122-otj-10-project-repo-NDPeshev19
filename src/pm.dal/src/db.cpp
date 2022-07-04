@@ -20,5 +20,6 @@ pm::dal::DB::DB()
 		"Driver={ODBC Driver 17 for SQL Server};"
 		"Server=LECOMP\\SQLEXPRESS;"
 		"Database=pmdb;"
-		"Trusted_Connection=yes;")
+		"Trusted_Connection=yes;"
+		"MARS_Connection=Yes")
 {}

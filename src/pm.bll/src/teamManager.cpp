@@ -36,6 +36,19 @@ void pm::bll::assignUser(std::string_view username, std::string_view teamName)
 	pm::dal::assignUser(user->id, team->id);
 }
 
+std::vector<pm::types::Team> pm::bll::getUserTeams(std::string_view username)
+{
+	if (username.empty())
+		throw std::runtime_error("Username can not be empty");
+
+	auto user = pm::dal::retrieveUser(username);
+	
+	if (!user)
+		throw std::runtime_error("User not found");
+	
+	return pm::dal::retrieveUserTeams(user->id);
+}
+
 void pm::bll::deleteTeam(std::string_view teamName)
 {
 	pm::dal::deleteTeam(teamName);
