@@ -39,8 +39,10 @@ bool pm::dal::checkForAdminUser()
 	return result.get<int>(0);
 }
 
-std::optional<pm::types::User> pm::dal::getUserLogin(std::string_view username, std::string_view password)
-try {
+std::optional<pm::types::User> pm::dal::getUserLogin(
+	std::string_view username, std::string_view password) 
+try 
+{
 	auto& conn = pm::dal::DB::get().conn();
 
 	nanodbc::statement statement(conn);
@@ -143,6 +145,107 @@ void pm::dal::createUser(const pm::types::User& user)
 	statement.bind(7, &lvalue_cast(static_cast<int>(user.isAdmin)));
 
 	nanodbc::execute(statement);
+}
+
+std::optional<pm::types::User> pm::dal::retrieveUser(size_t userId)
+try 
+{
+	auto& conn = pm::dal::DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"SELECT Id, UserName, Password, FirstName, LastName, "
+		"DateOfCreation, IdOfCreator, DateOfLastChange, IdOfLastChanger, "
+		"IsDeleted, IsAdmin "
+		"FROM Users "
+		"WHERE Id = ? AND IsDeleted = 0");
+
+	statement.bind(0, &userId);
+
+	nanodbc::result result = nanodbc::execute(statement);
+	result.next();
+
+	auto user = constructUser(result);
+
+	return { user };
+}
+catch (...)
+{
+	return std::nullopt;
+}
+
+std::optional<pm::types::User> pm::dal::retrieveUserWithDeleted(size_t userId)
+try
+{
+	auto& conn = pm::dal::DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"SELECT Id, UserName, Password, FirstName, LastName, "
+		"DateOfCreation, IdOfCreator, DateOfLastChange, IdOfLastChanger, "
+		"IsDeleted, IsAdmin "
+		"FROM Users "
+		"WHERE Id = ?");
+
+	statement.bind(0, &userId);
+
+	nanodbc::result result = nanodbc::execute(statement);
+	result.next();
+
+	auto user = constructUser(result);
+
+	return { user };
+}
+catch (...)
+{
+	return std::nullopt;
+}
+
+void pm::dal::deleteUser(const size_t userIdToDelete, 
+	const size_t loggedUserId)
+try
+{
+	auto& conn = pm::dal::DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"UPDATE Users "
+		"SET IsDeleted = 1, idOfLastChanger = ?, DateOfLastChange = GETDATE()"
+		"WHERE Id = ?");
+	
+	statement.bind(0, &loggedUserId);
+	statement.bind(1, &userIdToDelete);
+	
+	nanodbc::execute(statement);
+}
+catch (...)
+{
+	throw std::runtime_error("Failed to delete user.");
+}
+
+void pm::dal::restoreUser(size_t userIdToRestore, size_t loggedUserId)
+try
+{
+	auto& conn = pm::dal::DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"UPDATE Users "
+		"SET IsDeleted = 0, idOfLastChanger = ?, DateOfLastChange = GETDATE()"
+		"WHERE Id = ?");
+
+	statement.bind(0, &loggedUserId);
+	statement.bind(1, &userIdToRestore);
+
+	nanodbc::execute(statement);
+}
+catch (...)
+{
+	throw std::runtime_error("Failed to restore user.");
 }
 
 // Note: Call nanodbc::result::next before invoking.

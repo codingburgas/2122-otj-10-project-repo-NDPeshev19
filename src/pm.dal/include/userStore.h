@@ -18,6 +18,10 @@ namespace pm::dal
 
 	std::vector<pm::types::User> extractUsersimpl(nanodbc::result result);
 	void createUser(const pm::types::User& user);
+	std::optional<pm::types::User> retrieveUser(size_t userId);
+	std::optional<pm::types::User> retrieveUserWithDeleted(size_t userId);
+	void deleteUser(size_t userIdToDelete, size_t loggedUserId);
+	void restoreUser(size_t userIdToRestore, size_t loggedUserId);
 
 	pm::types::User constructUser(nanodbc::result& conn);
 }
