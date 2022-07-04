@@ -166,7 +166,9 @@
     <ClCompile Include="src\cli.cpp" />
     <ClCompile Include="src\login.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\teamMenu.cpp" />
     <ClCompile Include="src\teamWizard.cpp" />
+    <ClCompile Include="src\userMenu.cpp" />
     <ClCompile Include="src\userWizard.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +185,9 @@
   <ItemGroup>
     <ClInclude Include="include\cli.h" />
     <ClInclude Include="include\login.h" />
+    <ClInclude Include="include\teamMenu.h" />
     <ClInclude Include="include\teamWizard.h" />
+    <ClInclude Include="include\userMenu.h" />
     <ClInclude Include="include\userWizard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
