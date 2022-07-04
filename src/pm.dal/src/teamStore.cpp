@@ -132,6 +132,21 @@ void pm::dal::assignUser(size_t userId, size_t teamId)
 	nanodbc::execute(statement);
 }
 
+void pm::dal::unAssignUser(size_t userId, size_t teamId)
+{
+	auto conn = DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"DELETE FROM UsersTeams WHERE UserId = ? AND TeamId = ?");
+
+	statement.bind(0, &userId);
+	statement.bind(1, &teamId);
+
+	nanodbc::execute(statement);
+}
+
 std::vector<pm::types::Team> pm::dal::retrieveUserTeams(size_t userId)
 {
 	auto conn = DB::get().conn();

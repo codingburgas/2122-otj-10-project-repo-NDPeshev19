@@ -9,6 +9,7 @@ namespace pm::bll
 	std::vector<pm::types::Team> getAllTeams();
 	std::optional<pm::types::Team> retrieveTeam(std::string_view teamName);
 	void assignUser(std::string_view username, std::string_view teamName);
+	void unAssignUser(std::string_view username, std::string_view teamName);
 	
 	std::vector<pm::types::Team> getUserTeams(std::string_view username);
 	

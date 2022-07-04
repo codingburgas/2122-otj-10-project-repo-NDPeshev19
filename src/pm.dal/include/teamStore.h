@@ -12,6 +12,7 @@ namespace pm::dal
 	void deleteTeam(std::string_view teamName);
 
 	void assignUser(size_t userId, size_t teamId);
+	void unAssignUser(size_t userId, size_t teamId);
 
 	std::vector<pm::types::Team> retrieveUserTeams(size_t userId);
 	

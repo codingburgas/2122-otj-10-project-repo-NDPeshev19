@@ -45,6 +45,13 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 			}, "Add a user to a team", {"Username", "Team name"});
 
 		// Remove user from team
+		menu->Insert("unAssign",
+			[](std::ostream& out, std::string username, std::string teamName)
+			{
+				pm::bll::unAssignUser(username, teamName);
+				out << "User " << username << 
+					" removed from team " << teamName << '\n';
+			}, "Remove a user from a team", {"Username", "Team name"});
 
 		menu->Insert("delete",
 			[](std::ostream& out, std::string teamName)
@@ -71,16 +78,24 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 			out << table << '\n';
 		});
 
+
 	menu->Insert("assignSelf",
 		[loggedUserId](std::ostream& out, std::string teamName)
 		{
 			auto user = pm::bll::getUser(loggedUserId);
 
 			pm::bll::assignUser(user->username, teamName);
-			out << "User " << user->username <<
-				" assigned to team " << teamName << '\n';
+			out << "You have been assigned from team " << teamName << '\n';
 		}, "Assign yourself to a team", { "Team name" });
 
+	menu->Insert("unAssignSelf",
+		[loggedUserId](std::ostream& out, std::string teamName)
+		{
+			pm::bll::unAssignUser(
+				pm::bll::getUser(loggedUserId)->username, teamName);
+			out << "You have been unassigned from team " << teamName << '\n';
+		}, "Unassign yourself from a team", { "Team name" });
+	
 	menu->Insert("shutdown",
 		[](std::ostream& out)
 		{
