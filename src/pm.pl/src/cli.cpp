@@ -56,20 +56,24 @@ std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin,
 		printAllUsers(out, includeDeleted);
 	}, "List all users.", {"Show deleted users (bool)"});
 	
-	menu->Insert("add", [loggedUserId](std::ostream& out, 
+	menu->Insert("add", 
+		[loggedUserId](std::ostream& out, 
 		std::string username,
 		std::string password,
 		std::string firstName,
 		std::string lastName,
 		bool isAdmin)
-	{
-		auto now = std::chrono::system_clock::to_time_t(
-			std::chrono::system_clock::now());
+		{
+			auto now = std::chrono::system_clock::to_time_t(
+				std::chrono::system_clock::now());
 
-		pm::bll::addUser({ username, password, firstName, lastName,
-			now, loggedUserId, now, loggedUserId, 0, isAdmin });
-		
-	}, "Add a user.", { "Username", "Password", "First name", "Last name", "Is Admin (bool)", });
+			pm::types::User user = { username, password, firstName, lastName,
+				now, loggedUserId, now, loggedUserId, 0, isAdmin };
+
+			pm::bll::addUser(user);
+
+			out << "User: " << user.firstName << ' ' << user.lastName << " added.\n";
+		}, "Add a user.", { "Username", "Password", "First name", "Last name", "Is Admin (bool)", });
 
 	menu->Insert("ping", [](std::ostream& out)
 		{
