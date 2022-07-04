@@ -35,8 +35,8 @@ std::unique_ptr<cli::Menu> pm::pl::getMenu(const bool isAdmin,
 			out << '\a';
 		});
 
-	rootMenu->Insert(
-		std::move(pm::pl::getUserManagerSubMenu(isAdmin, loggedUserId)));
+	rootMenu->Insert(std::move(getUserManagerSubMenu(isAdmin, loggedUserId)));
+	rootMenu->Insert(std::move(getTeamManagerSubMenu(isAdmin, loggedUserId)));
 
 	return rootMenu;
 }
@@ -164,6 +164,45 @@ std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin,
 		}, "Clear screen");
 
 	menu->Insert("ping", 
+		[](std::ostream& out)
+		{
+			out << "User pong\n";
+		});
+
+	return menu;
+}
+
+std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
+	bool isAdmin, size_t loggedUserId)
+{
+	auto menu = std::make_unique<cli::Menu>("userManager");
+
+	if (isAdmin)
+	{
+		// Add team
+		// Get all teams
+		// Get all users of team (list team and it's users)
+		// Get all teams of user (list users and all teams the user is in)
+		// Change team name
+		// Assign user to team
+		// Remove user from team
+		// Delete team
+	}
+
+	menu->Insert("self",
+		[loggedUserId](std::ostream& out)
+		{
+			// display all teams current user is in
+			out << "not implemented\n";
+		});
+
+	menu->Insert("cls",
+		[](std::ostream& out)
+		{
+			system("cls");
+		}, "Clear screen");
+
+	menu->Insert("ping",
 		[](std::ostream& out)
 		{
 			out << "User pong\n";
