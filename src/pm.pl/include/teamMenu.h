@@ -1,5 +1,6 @@
 #pragma once
 
+#include "userWizard.h"
 #include "teamWizard.h"
 
 #include "userManager.h"

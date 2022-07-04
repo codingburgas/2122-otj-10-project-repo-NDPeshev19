@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch_dal.h"
+#include "user.h"
 #include "team.h"
 
 namespace pm::dal
@@ -15,6 +16,7 @@ namespace pm::dal
 	void unAssignUser(size_t userId, size_t teamId);
 
 	std::vector<pm::types::Team> retrieveUserTeams(size_t userId);
+	std::vector<pm::types::User> retrieveTeamUsers(size_t teamId);
 	
 	void renameTeam(
 		size_t teamId, std::string_view newName, size_t loggedUserId);

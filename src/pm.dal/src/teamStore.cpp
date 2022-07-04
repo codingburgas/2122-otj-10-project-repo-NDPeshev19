@@ -1,5 +1,6 @@
 #include "pch_dal.h"
 
+#include "userStore.h"
 #include "teamStore.h"
 #include "db.h"
 
@@ -168,17 +169,36 @@ std::vector<pm::types::Team> pm::dal::retrieveUserTeams(size_t userId)
 		auto teamId = result.get<size_t>("TeamId");
 		auto team = retrieveTeam(teamId);
 		
-		if (team)
-		{
-			teams.push_back(std::move(*team));
-		}
-		else
-		{
-			std::cout << "Team id that failed: " << teamId << '\n';
-		}
+		teams.push_back(std::move(*team));
 	}
 
 	return teams;
+}
+
+std::vector<pm::types::User> pm::dal::retrieveTeamUsers(size_t teamId)
+{
+	auto conn = DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement, "SELECT UserId FROM UsersTeams WHERE TeamId = ?");
+
+	statement.bind(0, &teamId);
+	
+	nanodbc::result result = nanodbc::execute(statement);
+	
+	std::vector<types::User> users;
+	users.reserve(result.rows() || 1);
+	
+	while (result.next())
+	{
+		auto userId = result.get<size_t>("UserId");
+		auto user = retrieveUser(userId);
+		
+		users.push_back(std::move(*user));
+	}
+
+	return users;
 }
 
 void pm::dal::renameTeam(

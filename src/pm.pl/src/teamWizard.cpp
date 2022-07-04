@@ -6,12 +6,12 @@ void pm::pl::printAllTeams(std::ostream& out)
 {
 	auto teams = pm::bll::getAllTeams();
 
-	auto table = createTable(teams);
+	auto table = getTeamsTable(teams);
 
 	out << table << '\n';
 }
 
-tabulate::Table pm::pl::createTable(std::vector<pm::types::Team> teams)
+tabulate::Table pm::pl::getTeamsTable(std::vector<pm::types::Team> teams)
 {
 	tabulate::Table table;
 	

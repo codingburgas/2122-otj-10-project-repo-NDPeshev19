@@ -62,6 +62,16 @@ std::vector<pm::types::Team> pm::bll::getUserTeams(std::string_view username)
 	return pm::dal::retrieveUserTeams(user->id);
 }
 
+std::vector<pm::types::User> pm::bll::getTeamUsers(std::string_view teamName)
+{
+	auto team = pm::dal::retrieveTeam(teamName);
+	
+	if (!team)
+		throw std::runtime_error("Team not found");
+
+	return pm::dal::retrieveTeamUsers(team->id);
+}
+
 void pm::bll::renameTeam(
 	std::string_view teamName, std::string_view newName, size_t loggedUserId)
 {

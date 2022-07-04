@@ -3,6 +3,8 @@
 #include "pch_bll.h"
 #include "..\src\pm.types\include\user.h"
 
+#include "tabulate/tabulate.hpp"
+
 namespace pm::bll
 {
 	std::optional<pm::types::User> loginAsUser(

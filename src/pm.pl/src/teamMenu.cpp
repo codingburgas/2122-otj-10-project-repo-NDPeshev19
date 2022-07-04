@@ -1,6 +1,5 @@
 #include "teamMenu.h"
 
-
 std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 	bool isAdmin, size_t loggedUserId)
 {
@@ -16,16 +15,22 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 			}, "Create a new team", { "Name of team" });
 
 		// Get all users of team (list team and it's users)
+		menu->Insert("listTeamUsers",
+			[](std::ostream& out, std::string teamName)
+			{
+				auto users = pm::bll::getTeamUsers(teamName);
+				auto table = pm::pl::getUsersTable(users);
+				out << table << '\n';
+			}, "List all users of a team", { "Name of team" });
 		
 		menu->Insert("listUserTeams",
 			[](std::ostream& out, std::string username)
 			{
 				auto teams = pm::bll::getUserTeams(username);
-				auto table = pm::pl::createTable(teams);
+				auto table = pm::pl::getTeamsTable(teams);
 				out << table << '\n';
 			}, "List all teams that a certain user is in", {"Username"});
-
-		// Change team name
+		
 		menu->Insert("rename",
 			[loggedUserId](
 				std::ostream& out, std::string teamName, std::string newName)
@@ -44,7 +49,6 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 					" assigned to team " << teamName << '\n';
 			}, "Add a user to a team", {"Username", "Team name"});
 
-		// Remove user from team
 		menu->Insert("unAssign",
 			[](std::ostream& out, std::string username, std::string teamName)
 			{
@@ -74,7 +78,7 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 				pm::bll::getUserTeams(
 					pm::bll::getUser(loggedUserId)->username);
 			
-			auto table = pm::pl::createTable(teams);
+			auto table = pm::pl::getTeamsTable(teams);
 			out << table << '\n';
 		});
 

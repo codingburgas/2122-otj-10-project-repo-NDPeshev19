@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch_bll.h"
+#include "user.h"
 #include "team.h"
 
 namespace pm::bll
@@ -12,6 +13,7 @@ namespace pm::bll
 	void unAssignUser(std::string_view username, std::string_view teamName);
 	
 	std::vector<pm::types::Team> getUserTeams(std::string_view username);
+	std::vector<pm::types::User> getTeamUsers(std::string_view teamName);
 	
 	void renameTeam(std::string_view teamName, std::string_view newName, 
 		size_t loggedUserId);
