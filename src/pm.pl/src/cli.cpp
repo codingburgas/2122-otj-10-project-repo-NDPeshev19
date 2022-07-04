@@ -1,8 +1,7 @@
 #include "cli.h"
 
 #include "userWizard.h"
-
-#include <functional>
+#include "teamWizard.h"
 
 std::unique_ptr<cli::Menu> pm::pl::getMenu(const bool isAdmin, 
 	const size_t loggedUserId)
@@ -175,12 +174,23 @@ std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin,
 std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 	bool isAdmin, size_t loggedUserId)
 {
-	auto menu = std::make_unique<cli::Menu>("userManager");
+	auto menu = std::make_unique<cli::Menu>("teamManager");
 
 	if (isAdmin)
 	{
-		// Add team
-		// Get all teams
+		menu->Insert("add",
+			[loggedUserId](std::ostream& out, std::string teamName)
+			{
+				pm::bll::addTeam(teamName, loggedUserId);
+				out << "Team " << teamName << " added\n";
+			}, "Create a new team", {"Name of team"});
+
+		menu->Insert("list",
+			[](std::ostream& out)
+			{
+				printAllTeams(out);
+			}, "List all teams");
+
 		// Get all users of team (list team and it's users)
 		// Get all teams of user (list users and all teams the user is in)
 		// Change team name

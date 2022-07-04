@@ -1,5 +1,8 @@
 #pragma once
 
+#include "userManager.h"
+#include "teamManager.h"
+
 #include "cli\cli.h"
 #include "cli\clilocalsession.h"
 #include "cli\loopscheduler.h"

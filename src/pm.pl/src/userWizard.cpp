@@ -35,9 +35,4 @@ void pm::pl::printAllUsers(std::ostream& out, const bool includeDeleted)
 		.font_align(tabulate::FontAlign::center);
 
 	out << table << '\n';
-	
-	/*for (const auto& user : users)
-	{
-		out << user.toPrettyString() << '\n' << std::string(47, '-') << '\n';
-	}*/
 }

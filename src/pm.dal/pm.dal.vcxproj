@@ -185,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="include\db.h" />
     <ClInclude Include="include\pch_dal.h" />
+    <ClInclude Include="include\teamStore.h" />
     <ClInclude Include="include\userStore.h" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +196,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\teamStore.cpp" />
     <ClCompile Include="src\userStore.cpp" />
   </ItemGroup>
   <ItemGroup>

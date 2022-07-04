@@ -21,6 +21,9 @@
     <ClInclude Include="include\user.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\team.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch_types.cpp">

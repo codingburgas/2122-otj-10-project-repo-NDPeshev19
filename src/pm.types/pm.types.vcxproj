@@ -168,6 +168,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\pch_types.h" />
+    <ClInclude Include="include\team.h" />
     <ClInclude Include="include\user.h" />
   </ItemGroup>
   <ItemGroup>
