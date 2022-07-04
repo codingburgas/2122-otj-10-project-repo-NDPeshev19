@@ -4,6 +4,7 @@
 #include "db.h"
 #include "userStore.h"
 #include "userManager.h"
+#include "login.h"
 
 #include "..\src\pm.utils\include\md5.h"
 
@@ -11,12 +12,9 @@ int main() try
 {
 	pm::dal::ensureAdminUser();
 
-	auto user = pm::bll::loginAsUser("admsin", "adminpass");
+	auto user = pm::pl::login();
 
-	if (user)
-		std::cout << user->username << '\n';
-	else
-		std::cout << "Failed";
+	std::cout << "Mnogo si gotin :)\n";
 	
 	return EXIT_SUCCESS;
 }
