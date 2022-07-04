@@ -16,6 +16,9 @@ namespace pm::bll
 	void restoreUser(size_t userIdToRestore, size_t loggedUserId);
 	void giveAdminPrivileges(size_t userIdToOp, size_t loggedUserId);
 	void revokeAdminPrivileges(size_t userIdToDeOp, size_t loggedUserId);
+	
+	void changePassword(
+		size_t userId, std::string_view newPassword, size_t loggedUserId);
 
 	void addUser(const pm::types::User& user);
 }

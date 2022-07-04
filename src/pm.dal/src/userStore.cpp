@@ -282,6 +282,27 @@ void pm::dal::revokeAdminPrivileges(size_t userIdToDeOp, size_t loggedUserId)
 	nanodbc::execute(statement);
 }
 
+void pm::dal::changePassword(
+	size_t userId, std::string_view newPassword, size_t loggedUserId)
+{
+	auto& conn = pm::dal::DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"UPDATE Users "
+		"SET Password = ?, idOfLastChanger = ?, DateOfLastChange = GETDATE()"
+		"WHERE Id = ?");
+
+	const auto hashedPassword = md5(std::string(newPassword));
+
+	statement.bind(0, hashedPassword.c_str());
+	statement.bind(1, &loggedUserId);
+	statement.bind(2, &userId);
+
+	nanodbc::execute(statement);
+}
+
 // Note: Call nanodbc::result::next before invoking.
 pm::types::User pm::dal::constructUser(nanodbc::result& result)
 {

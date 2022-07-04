@@ -85,6 +85,17 @@ void pm::bll::revokeAdminPrivileges(size_t userIdToDeOp, size_t loggedUserId)
 	pm::dal::revokeAdminPrivileges(userIdToDeOp, loggedUserId);
 }
 
+void pm::bll::changePassword(
+	size_t userId, std::string_view newPassword, size_t loggedUserId)
+{
+	auto user = pm::dal::retrieveUser(userId);
+	
+	if (!user)
+		throw std::runtime_error("User not found.");
+
+	pm::dal::changePassword(userId, newPassword, loggedUserId);
+}
+
 void pm::bll::addUser(const pm::types::User& user)
 {
 	pm::dal::createUser(user);

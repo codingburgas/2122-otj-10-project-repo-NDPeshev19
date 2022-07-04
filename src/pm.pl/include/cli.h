@@ -13,4 +13,7 @@ namespace pm::pl
 	
 	std::unique_ptr<cli::Menu> getUserManagerSubMenu(
 		bool isAdmin, size_t loggedUserId);
+	
+	std::unique_ptr<cli::Menu> getTeamManagerSubMenu(
+		bool isAdmin, size_t loggedUserId);
 }

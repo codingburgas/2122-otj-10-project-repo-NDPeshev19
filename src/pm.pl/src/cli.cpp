@@ -73,13 +73,6 @@ std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin,
 	
 	if (isAdmin)
 	{
-		menu->Insert("self",
-			[loggedUserId](std::ostream& out)
-			{
-				out << 
-					pm::bll::getUser(loggedUserId)->toPrettyString() << '\n';
-			});
-
 		menu->Insert("list", 
 			[](std::ostream& out, bool includeDeleted)
 			{
@@ -124,21 +117,46 @@ std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin,
 					pm::bll::restoreUser(userIdToRestore, loggedUserId);
 					out << "User restored.\n";
 				}, "Restore a user", { "User id to restore" });
+
+			menu->Insert("otherPassword",
+				[loggedUserId](std::ostream& out,
+					int userIdToChangePassword, std::string newPassword)
+				{
+					pm::bll::changePassword(
+						userIdToChangePassword, newPassword, loggedUserId);
+					out << "Changed password\n";
+				});
 		}
 
 		menu->Insert("op",
 			[loggedUserId](std::ostream& out, int userIdToOp)
 			{
 				pm::bll::giveAdminPrivileges(userIdToOp, loggedUserId);
+				out << "Gave admin privileges\n";
 			}, "Give a user admin privileges", { "User id to op" });
 		
 		menu->Insert("deop",
 			[loggedUserId](std::ostream& out, int userIdToDeop)
 			{
 				pm::bll::revokeAdminPrivileges(userIdToDeop, loggedUserId);
+				out << "Revoked admin privileges\n";
 			}, "Revoke admin privileges from a user", { "User id to deop" });
 	}
 	
+	menu->Insert("password",
+		[loggedUserId](std::ostream& out, std::string newPassword)
+		{
+			pm::bll::changePassword(loggedUserId, newPassword, loggedUserId);
+			out << "Password changed.\n";
+		}, "Set a new password", { "New password" });
+	
+	menu->Insert("self",
+		[loggedUserId](std::ostream& out)
+		{
+			out <<
+				pm::bll::getUser(loggedUserId)->toPrettyString() << '\n';
+		});
+
 	menu->Insert("cls",
 		[](std::ostream& out)
 		{
