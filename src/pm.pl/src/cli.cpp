@@ -125,6 +125,18 @@ std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin,
 					out << "User restored.\n";
 				}, "Restore a user", { "User id to restore" });
 		}
+
+		menu->Insert("op",
+			[loggedUserId](std::ostream& out, int userIdToOp)
+			{
+				pm::bll::giveAdminPrivileges(userIdToOp, loggedUserId);
+			}, "Give a user admin privileges", { "User id to op" });
+		
+		menu->Insert("deop",
+			[loggedUserId](std::ostream& out, int userIdToDeop)
+			{
+				pm::bll::revokeAdminPrivileges(userIdToDeop, loggedUserId);
+			}, "Revoke admin privileges from a user", { "User id to deop" });
 	}
 	
 	menu->Insert("cls",

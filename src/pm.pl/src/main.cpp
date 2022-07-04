@@ -10,7 +10,8 @@
 
 #include "tabulate/tabulate.hpp"
 
-int main() try
+int main() 
+try
 {
 	pm::dal::ensureAdminUser();
 	

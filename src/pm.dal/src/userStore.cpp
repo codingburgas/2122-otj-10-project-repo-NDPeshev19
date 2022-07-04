@@ -248,6 +248,40 @@ catch (...)
 	throw std::runtime_error("Failed to restore user.");
 }
 
+void pm::dal::giveAdminPrivileges(size_t userIdToOp, size_t loggedUserId)
+{
+	auto& conn = pm::dal::DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"UPDATE Users "
+		"SET IsAdmin = 1, idOfLastChanger = ?, DateOfLastChange = GETDATE()"
+		"WHERE Id = ?");
+
+	statement.bind(0, &loggedUserId);
+	statement.bind(1, &userIdToOp);
+
+	nanodbc::execute(statement);
+}
+
+void pm::dal::revokeAdminPrivileges(size_t userIdToDeOp, size_t loggedUserId)
+{
+	auto& conn = pm::dal::DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"UPDATE Users "
+		"SET IsAdmin = 0, idOfLastChanger = ?, DateOfLastChange = GETDATE()"
+		"WHERE Id = ?");
+
+	statement.bind(0, &loggedUserId);
+	statement.bind(1, &userIdToDeOp);
+
+	nanodbc::execute(statement);
+}
+
 // Note: Call nanodbc::result::next before invoking.
 pm::types::User pm::dal::constructUser(nanodbc::result& result)
 {

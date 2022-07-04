@@ -52,6 +52,39 @@ void pm::bll::restoreUser(size_t userIdToRestore, size_t loggedUserId)
 	pm::dal::restoreUser(userIdToRestore, loggedUserId);
 }
 
+void pm::bll::giveAdminPrivileges(size_t userIdToOp, size_t loggedUserId)
+{
+	auto user = pm::dal::retrieveUser(userIdToOp);
+	
+	if (!user)
+		throw std::runtime_error("User not found.");
+
+	if (user->isAdmin == true)
+		throw std::runtime_error("User is already admin");
+
+	if (userIdToOp == loggedUserId)
+		throw std::runtime_error("Cannot give admin privileges to yourself.");
+	
+	pm::dal::giveAdminPrivileges(userIdToOp, loggedUserId);
+}
+
+void pm::bll::revokeAdminPrivileges(size_t userIdToDeOp, size_t loggedUserId)
+{
+	auto user = pm::dal::retrieveUser(userIdToDeOp);
+	
+	if (!user)
+		throw std::runtime_error("User not found.");
+
+	if (user->isAdmin == false)
+		throw std::runtime_error("User is already not admin");
+
+	if (userIdToDeOp == loggedUserId)
+		throw std::runtime_error("Cannot revoke admin " 
+			"privileges from yourself.");
+
+	pm::dal::revokeAdminPrivileges(userIdToDeOp, loggedUserId);
+}
+
 void pm::bll::addUser(const pm::types::User& user)
 {
 	pm::dal::createUser(user);
