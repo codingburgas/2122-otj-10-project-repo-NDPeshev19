@@ -9,24 +9,31 @@ std::unique_ptr<cli::Menu> pm::pl::getMenu(const bool isAdmin,
 {
 	auto rootMenu =  std::make_unique<cli::Menu>("main");
 	
-	rootMenu->Insert("ping", 
-	[](std::ostream& out) 
-	{
-		std::cout << "pong" << '\n'; 
-	});
-
 	rootMenu->Insert("shutdown", 
-	[](std::ostream& out)
-	{
-			std::cout << "Goodbye!\n";
-			exit(0);
-	});
+		[](std::ostream& out)
+		{
+				std::cout << "Goodbye!\n";
+				exit(0);
+		});
+	
+	rootMenu->Insert("cls",
+		[](std::ostream* out)
+		{
+			system("cls");
+		}, "Clear screen");
+
+	rootMenu->Insert("ping", 
+		[](std::ostream& out) 
+		{
+			std::cout << "pong" << '\n'; 
+		});
+
 
 	rootMenu->Insert("beep", 
-	[](std::ostream& out)
-	{
-		out << '\a';
-	});
+		[](std::ostream& out)
+		{
+			out << '\a';
+		});
 
 	rootMenu->Insert(
 		std::move(pm::pl::getUserManagerSubMenu(isAdmin, loggedUserId)));
@@ -54,7 +61,7 @@ void pm::pl::cli(std::unique_ptr<cli::Menu> menu)
 	cli::LoopScheduler scheduler;
 	cli::CliLocalTerminalSession localSession(cli, scheduler, std::cout);
 
-	scheduler.Post([] {std::cout << "Welcome to the Project Manager!"; });
+	scheduler.Post([] {std::cout << "Welcome to the Project Manager!\n"; });
 	
 	scheduler.Run();
 }
@@ -120,6 +127,12 @@ std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin,
 		}
 	}
 	
+	menu->Insert("cls",
+		[](std::ostream* out)
+		{
+			system("cls");
+		}, "Clear screen");
+
 	menu->Insert("ping", 
 		[](std::ostream& out)
 		{

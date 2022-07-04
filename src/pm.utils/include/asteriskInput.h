@@ -43,7 +43,7 @@ namespace pm::utils
                 std::cout << placeholder[i];
             }
             std::cout << std::flush;
-            while (listener.wait_for(std::chrono::milliseconds(10))
+            while (listener.wait_for(std::chrono::milliseconds(1))
                 != std::future_status::ready) {
                 refreshPlaceholder();
             }

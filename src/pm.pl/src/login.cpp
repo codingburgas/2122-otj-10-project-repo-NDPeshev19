@@ -13,7 +13,7 @@ pm::types::User pm::pl::login()
 	std::cout << "Username:\n";
 	getline(std::cin, username);
 	
-	pm::utils::PasswordField passwordField(" ", 1, 1);
+	pm::utils::PasswordField passwordField("  ", 1, 2);
 	std::cout << "Password:\n";
 	password = passwordField.getline();
 
