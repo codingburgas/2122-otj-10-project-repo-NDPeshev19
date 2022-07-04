@@ -10,11 +10,11 @@ pm::types::User pm::pl::login()
 
 	login:
 
-	std::cout << "Username:\n";
+	std::cout << "Username: ";
 	getline(std::cin, username);
 	
-	pm::utils::PasswordField passwordField(" ", 1, 1);
-	std::cout << "Password:\n";
+	pm::utils::PasswordField passwordField("Password: ", 1, 10);
+	//std::cout << "Password:\n";
 	password = passwordField.getline();
 
 	if (auto user = pm::bll::loginAsUser(username, password);
