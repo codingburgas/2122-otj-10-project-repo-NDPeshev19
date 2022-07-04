@@ -8,7 +8,7 @@ namespace pm::bll
 	std::optional<pm::types::User> loginAsUser(
 		std::string_view username, std::string_view password);
 
-	std::vector<pm::types::User> getAllUsers();
+	std::vector<pm::types::User> getAllUsers(bool includeDeleted);
 
 	void addUser(const pm::types::User& user);
 }

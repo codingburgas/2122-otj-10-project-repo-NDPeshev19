@@ -14,7 +14,9 @@ namespace pm::dal
 		std::string_view password);
 
 	std::vector<pm::types::User> retrieveAllUsers();
+	std::vector<pm::types::User> retrieveAllUsersWithDeleted();
 
+	std::vector<pm::types::User> extractUsersimpl(nanodbc::result result);
 	void createUser(const pm::types::User& user);
 
 	pm::types::User constructUser(nanodbc::result& conn);

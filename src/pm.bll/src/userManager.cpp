@@ -9,9 +9,11 @@ std::optional<pm::types::User> pm::bll::loginAsUser(
 	return pm::dal::getUserLogin(username, password);
 }
 
-std::vector<pm::types::User> pm::bll::getAllUsers()
+std::vector<pm::types::User> pm::bll::getAllUsers(const bool includeDeleted)
 {
-	return pm::dal::retrieveAllUsers();
+	return includeDeleted ? 
+		pm::dal::retrieveAllUsersWithDeleted() : 
+		pm::dal::retrieveAllUsers();
 }
 
 void pm::bll::addUser(const pm::types::User& user)

@@ -50,7 +50,7 @@ try {
 		"DateOfCreation, IdOfCreator, DateOfLastChange, IdOfLastChanger, "
 		"IsDeleted, IsAdmin "
 		"FROM Users "
-		"WHERE Username = ? AND Password = ?");
+		"WHERE Username = ? AND Password = ? AND IsDeleted = 0");
 
 
 	auto hashed = md5(std::string(password));
@@ -83,15 +83,33 @@ std::vector<pm::types::User> pm::dal::retrieveAllUsers()
 		"FROM Users "
 		"WHERE IsDeleted = 0");
 
-	nanodbc::result result = nanodbc::execute(statement);
+	return extractUsersimpl(nanodbc::execute(statement));
+}
 
+std::vector<pm::types::User> pm::dal::retrieveAllUsersWithDeleted()
+{
+	auto& conn = pm::dal::DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"SELECT Id, UserName, Password, FirstName, LastName, "
+		"DateOfCreation, IdOfCreator, DateOfLastChange, IdOfLastChanger, "
+		"IsDeleted, IsAdmin "
+		"FROM Users ");
+
+	return extractUsersimpl(nanodbc::execute(statement));
+}
+
+std::vector<pm::types::User> pm::dal::extractUsersimpl(nanodbc::result result)
+{
 	std::vector<pm::types::User> users;
 	users.reserve(result.rows() || 1);
 
 	while (result.next())
 	{
 		auto user = constructUser(result);
-		
+
 		users.push_back(std::move(user));
 	}
 

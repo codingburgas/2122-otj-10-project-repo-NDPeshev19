@@ -51,10 +51,10 @@ std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin,
 {
 	auto menu = std::make_unique<cli::Menu>("userManager");
 
-	menu->Insert("list", [](std::ostream& out) 
+	menu->Insert("list", [](std::ostream& out, bool includeDeleted) 
 	{ 
-		printAllUsers(out); 
-	}, "List all users.");
+		printAllUsers(out, includeDeleted);
+	}, "List all users.", {"Show deleted users (bool)"});
 	
 	menu->Insert("add", [loggedUserId](std::ostream& out, 
 		std::string username,

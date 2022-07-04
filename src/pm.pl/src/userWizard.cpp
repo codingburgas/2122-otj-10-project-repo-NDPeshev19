@@ -5,9 +5,9 @@
 #include <chrono>
 
 
-void pm::pl::printAllUsers(std::ostream& out)
+void pm::pl::printAllUsers(std::ostream& out, const bool includeDeleted)
 {
-	auto users = pm::bll::getAllUsers();
+	auto users = pm::bll::getAllUsers(includeDeleted);
 	
 	for (const auto& user : users)
 	{
