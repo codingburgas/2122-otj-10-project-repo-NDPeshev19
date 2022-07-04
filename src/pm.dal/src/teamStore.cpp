@@ -87,6 +87,22 @@ void pm::dal::deleteTeam(std::string_view teamName)
 	nanodbc::execute(statement);
 }
 
+void pm::dal::assignUser(size_t userId, size_t teamId)
+{
+	auto conn = DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"INSERT INTO UsersTeams (UserId, TeamId) "
+		"VALUES (?, ?)");
+
+	statement.bind(0, &userId);
+	statement.bind(1, &teamId);
+
+	nanodbc::execute(statement);
+}
+
 pm::types::Team pm::dal::constructTeam(nanodbc::result& result)
 {
 	auto id = result.get<size_t>("Id");

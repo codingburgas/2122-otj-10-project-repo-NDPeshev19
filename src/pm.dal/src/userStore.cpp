@@ -175,6 +175,34 @@ catch (...)
 	return std::nullopt;
 }
 
+std::optional<pm::types::User> pm::dal::retrieveUser(std::string_view username)
+try
+{
+	auto& conn = pm::dal::DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"SELECT Id, UserName, Password, FirstName, LastName, "
+		"DateOfCreation, IdOfCreator, DateOfLastChange, IdOfLastChanger, "
+		"IsDeleted, IsAdmin "
+		"FROM Users "
+		"WHERE Username = ? AND IsDeleted = 0");
+
+	statement.bind(0, username.data());
+
+	nanodbc::result result = nanodbc::execute(statement);
+	result.next();
+
+	auto user = constructUser(result);
+
+	return { user };
+}
+catch (...)
+{
+	return std::nullopt;
+}
+
 std::optional<pm::types::User> pm::dal::retrieveUserWithDeleted(size_t userId)
 try
 {

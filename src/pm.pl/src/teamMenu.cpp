@@ -24,9 +24,15 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 		// Get all users of team (list team and it's users)
 		// Get all teams of user (list users and all teams the user is in)
 		// Change team name
-		// Assign user to team
 		
-		
+		menu->Insert("assign",
+			[loggedUserId](std::ostream& out, 
+				std::string username, std::string teamName)
+			{
+				pm::bll::assignUser(username, teamName);
+				out<< "User " << username << 
+					" assigned to team " << teamName << '\n';
+			}, "Add a user to a team", {"Username", "Team name"});
 
 		// Remove user from team
 
