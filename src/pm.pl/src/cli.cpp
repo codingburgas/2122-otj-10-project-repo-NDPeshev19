@@ -1,6 +1,10 @@
 #include "cli.h"
 
-std::unique_ptr<cli::Menu> pm::pl::getMenu(bool isAdmin)
+#include "userWizard.h"
+
+#include <functional>
+
+std::unique_ptr<cli::Menu> pm::pl::getMenu(const bool isAdmin)
 {
 	auto rootMenu =  std::make_unique<cli::Menu>("main");
 	
@@ -37,14 +41,16 @@ void pm::pl::cli(std::unique_ptr<cli::Menu> menu)
 	cli::LoopScheduler scheduler;
 	cli::CliLocalTerminalSession localSession(cli, scheduler, std::cout);
 
-	scheduler.Post([] {std::cout << "Welcome to the Project Manager!\n"; });
+	scheduler.Post([] {std::cout << "Welcome to the Project Manager!"; });
 	
 	scheduler.Run();
 }
 
-std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(bool isAdmin)
+std::unique_ptr<cli::Menu> pm::pl::getUserManagerSubMenu(const bool isAdmin)
 {
 	auto menu = std::make_unique<cli::Menu>("userManager");
+
+	menu->Insert("list", [](std::ostream& out) { printAllUsers(out); });
 
 	menu->Insert("ping", [](std::ostream& out)
 		{

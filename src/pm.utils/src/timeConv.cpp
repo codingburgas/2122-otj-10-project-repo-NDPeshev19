@@ -16,3 +16,13 @@ time_t pm::utils::toTimeT(const nanodbc::timestamp& ts)
 
 	return tsRes;
 }
+
+std::string pm::utils::toString(time_t t)
+{
+	char buff[20];
+	struct tm* timeinfo;
+	timeinfo = localtime(&t);
+	strftime(buff, sizeof(buff), "%b %d %H:%M", timeinfo);
+
+	return std::string(buff);
+}

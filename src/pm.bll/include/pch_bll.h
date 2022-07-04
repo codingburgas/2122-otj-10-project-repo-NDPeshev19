@@ -9,5 +9,6 @@
 
 // add headers that you want to pre-compile here
 #include <optional>
+#include <vector>
 
 #endif //PCH_H_BLL

@@ -61,25 +61,41 @@ try {
 
 	result.next();
 
-	auto id = result.get<size_t>("Id");
-	auto userName = result.get<std::string>("UserName");
-	auto passwordHash = result.get<std::string>("Password");
-	auto firstName = result.get<std::string>("FirstName");
-	auto lastName = result.get<std::string>("LastName");
-	auto dateOfCreation = pm::utils::toTimeT(result.get<nanodbc::timestamp>("DateOfCreation"));
-	auto idOfCreator = result.get<size_t>("IdOfCreator");
-	auto dateOfLastChanger = pm::utils::toTimeT(result.get<nanodbc::timestamp>("DateOfLastChange"));
-	auto idOfLastChanger = result.get<size_t>("IdOfLastChanger");
-	auto isDeleted = static_cast<bool>(result.get<int>("IsDeleted"));
-	auto isAdmin = static_cast<bool>(result.get<int>("IsAdmin"));
+	auto user = constructUser(result);
 
-	return {{ id, userName, passwordHash, firstName, lastName,
-						dateOfCreation, idOfCreator, dateOfLastChanger, idOfLastChanger,
-						isDeleted, isAdmin }};
+	return { user };
 }
 catch (...)
 {
 	return std::nullopt;
+}
+
+std::vector<pm::types::User> pm::dal::retrieveAllUsers()
+{
+	auto& conn = pm::dal::DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"SELECT Id, UserName, Password, FirstName, LastName, "
+		"DateOfCreation, IdOfCreator, DateOfLastChange, IdOfLastChanger, "
+		"IsDeleted, IsAdmin "
+		"FROM Users "
+		"WHERE IsDeleted = 0");
+
+	nanodbc::result result = nanodbc::execute(statement);
+
+	std::vector<pm::types::User> users;
+	users.reserve(result.rows() || 1);
+
+	while (result.next())
+	{
+		auto user = constructUser(result);
+		
+		users.push_back(std::move(user));
+	}
+
+	return users;
 }
 
 void pm::dal::createUser(const pm::types::User& user)
@@ -109,4 +125,26 @@ void pm::dal::createUser(const pm::types::User& user)
 	statement.bind(7, &lvalue_cast(static_cast<int>(user.isAdmin)));
 
 	nanodbc::execute(statement);
+}
+
+// Note: Call nanodbc::result::next before invoking.
+pm::types::User pm::dal::constructUser(nanodbc::result& result)
+{
+	auto id = result.get<size_t>("Id");
+	auto userName = result.get<std::string>("UserName");
+	auto passwordHash = result.get<std::string>("Password");
+	auto firstName = result.get<std::string>("FirstName");
+	auto lastName = result.get<std::string>("LastName");
+	auto dateOfCreation = 
+		pm::utils::toTimeT(result.get<nanodbc::timestamp>("DateOfCreation"));
+	auto idOfCreator = result.get<size_t>("IdOfCreator");
+	auto dateOfLastChanger = 
+		pm::utils::toTimeT(result.get<nanodbc::timestamp>("DateOfLastChange"));
+	auto idOfLastChanger = result.get<size_t>("IdOfLastChanger");
+	auto isDeleted = static_cast<bool>(result.get<int>("IsDeleted"));
+	auto isAdmin = static_cast<bool>(result.get<int>("IsAdmin"));
+
+	return { id, userName, passwordHash, firstName, lastName,
+			dateOfCreation, idOfCreator, dateOfLastChanger, idOfLastChanger,
+			isDeleted, isAdmin };
 }

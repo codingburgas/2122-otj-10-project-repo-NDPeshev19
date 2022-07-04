@@ -13,5 +13,9 @@ namespace pm::dal
 	std::optional<pm::types::User> getUserLogin(std::string_view username,
 		std::string_view password);
 
+	std::vector<pm::types::User> retrieveAllUsers();
+
 	void createUser(const pm::types::User& user);
+
+	pm::types::User constructUser(nanodbc::result& conn);
 }

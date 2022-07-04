@@ -8,3 +8,8 @@ std::optional<pm::types::User> pm::bll::loginAsUser(
 {
 	return pm::dal::getUserLogin(username, password);
 }
+
+std::vector<pm::types::User> pm::bll::getAllUsers()
+{
+	return pm::dal::retrieveAllUsers();
+}
