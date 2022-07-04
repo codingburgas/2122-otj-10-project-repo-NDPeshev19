@@ -18,9 +18,15 @@
     <ClInclude Include="include\pch_bll.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\userManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch_bll.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\userManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

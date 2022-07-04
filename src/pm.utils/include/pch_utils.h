@@ -8,5 +8,8 @@
 #define PCH_H_UTILS
 
 // add headers that you want to pre-compile here
+#include <ctime>
+
+#include "nanodbc\nanodbc.h"
 
 #endif //PCH_H_UTILS

@@ -24,12 +24,18 @@
     <ClInclude Include="include\md5.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\timeConv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\md5.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\timeConv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

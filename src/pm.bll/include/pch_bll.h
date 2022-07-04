@@ -8,5 +8,6 @@
 #define PCH_H_BLL
 
 // add headers that you want to pre-compile here
+#include <optional>
 
 #endif //PCH_H_BLL

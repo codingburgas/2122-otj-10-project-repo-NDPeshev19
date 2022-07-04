@@ -9,6 +9,7 @@
 
 // add headers that you want to pre-compile here
 #include <chrono>
+#include <optional>
 #include <string>
 #include <string_view>
 
