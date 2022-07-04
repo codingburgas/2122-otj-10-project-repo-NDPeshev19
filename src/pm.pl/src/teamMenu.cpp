@@ -17,7 +17,6 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 
 		// Get all users of team (list team and it's users)
 		
-		
 		menu->Insert("listUserTeams",
 			[](std::ostream& out, std::string username)
 			{
@@ -27,6 +26,14 @@ std::unique_ptr<cli::Menu> pm::pl::getTeamManagerSubMenu(
 			}, "List all teams that a certain user is in", {"Username"});
 
 		// Change team name
+		menu->Insert("rename",
+			[loggedUserId](
+				std::ostream& out, std::string teamName, std::string newName)
+			{
+				pm::bll::renameTeam(teamName, newName, loggedUserId);
+				out << "Team " << teamName << 
+					" renamed to " << newName << '\n';
+			}, "Rename a team", { "Team name", "New name" });
 		
 		menu->Insert("assign",
 			[loggedUserId](std::ostream& out, 

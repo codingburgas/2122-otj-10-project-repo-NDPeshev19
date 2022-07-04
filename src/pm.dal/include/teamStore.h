@@ -14,6 +14,9 @@ namespace pm::dal
 	void assignUser(size_t userId, size_t teamId);
 
 	std::vector<pm::types::Team> retrieveUserTeams(size_t userId);
+	
+	void renameTeam(
+		size_t teamId, std::string_view newName, size_t loggedUserId);
 
 	pm::types::Team constructTeam(nanodbc::result& result);
 }

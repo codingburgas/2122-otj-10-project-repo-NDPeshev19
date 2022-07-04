@@ -166,6 +166,24 @@ std::vector<pm::types::Team> pm::dal::retrieveUserTeams(size_t userId)
 	return teams;
 }
 
+void pm::dal::renameTeam(
+	size_t teamId, std::string_view newName, size_t loggedUserId)
+{
+	auto conn = DB::get().conn();
+
+	nanodbc::statement statement(conn);
+
+	nanodbc::prepare(statement,
+		"UPDATE Teams SET Name = ?, DateOfLastChange = GETDATE(), "
+		"IdOfLastChanger = ? WHERE Id = ?");
+
+	statement.bind(0, newName.data());
+	statement.bind(1, &loggedUserId);
+	statement.bind(2, &teamId);
+
+	nanodbc::execute(statement);
+}
+
 pm::types::Team pm::dal::constructTeam(nanodbc::result& result)
 {
 	auto id = result.get<size_t>("Id");

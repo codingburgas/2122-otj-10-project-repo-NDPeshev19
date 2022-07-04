@@ -49,6 +49,21 @@ std::vector<pm::types::Team> pm::bll::getUserTeams(std::string_view username)
 	return pm::dal::retrieveUserTeams(user->id);
 }
 
+void pm::bll::renameTeam(
+	std::string_view teamName, std::string_view newName, size_t loggedUserId)
+{
+	if (teamName.empty())
+		throw std::runtime_error("Team name can not be empty");
+	if (newName.empty())
+		throw std::runtime_error("New name can not be empty");
+	
+	auto team = pm::dal::retrieveTeam(teamName);
+	if (!team)
+		throw std::runtime_error("Team not found");
+	
+	pm::dal::renameTeam(team->id, newName, loggedUserId);
+}
+
 void pm::bll::deleteTeam(std::string_view teamName)
 {
 	pm::dal::deleteTeam(teamName);

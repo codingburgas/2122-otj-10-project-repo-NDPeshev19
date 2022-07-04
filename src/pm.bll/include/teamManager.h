@@ -12,5 +12,8 @@ namespace pm::bll
 	
 	std::vector<pm::types::Team> getUserTeams(std::string_view username);
 	
+	void renameTeam(std::string_view teamName, std::string_view newName, 
+		size_t loggedUserId);
+
 	void deleteTeam(std::string_view teamName);
 }
