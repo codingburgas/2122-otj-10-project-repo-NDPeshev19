@@ -4,7 +4,7 @@
 #include "teamStore.h"
 #include "db.h"
 
-#include "timeConv.h";
+#include "timeConv.h"
 
 #include <iostream>
 

@@ -1,14 +1,9 @@
-#include <iostream>
-#include <memory>
-
-#include "nanodbc\nanodbc.h"
-#include "db.h"
 #include "userStore.h"
-#include "userManager.h"
+
 #include "login.h"
 #include "cli.h"
 
-#include "tabulate/tabulate.hpp"
+#include <iostream>
 
 int main() 
 try
